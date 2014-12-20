@@ -35,7 +35,7 @@ object ExcelHandle {
       albaranDateCell.setCellValue(albaranDate.toString)
 
       val costCell = row.createCell(9)
-      val cost = data(7).replace('.', ',')
+      val cost = headElement(7).replace('.', ',')
       costCell.setCellValue(cost.toString)
     }
 
