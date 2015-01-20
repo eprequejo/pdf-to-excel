@@ -1,3 +1,4 @@
+import com.github.retronym.SbtOneJar
 import sbt._
 import Keys._
 
@@ -10,23 +11,28 @@ object MyBuild extends Build {
     scalaVersion := "2.10.2"
   )
 
-  lazy val root = Project(id = "pdftoexcel",
-                          base = file("."),
-                          settings = defaultSettings ++ Seq(
-                            libraryDependencies ++= Seq(
-                              Dependencies.itext, 
-                              Dependencies.poi,
-                              Dependencies.poi_ooxml,
-                              Dependencies.poi_ooxml_schemas,
-                              Dependencies.scopt))
-                          )
+  lazy val root = Project(
+    id = "pdftoexcel",
+    base = file("."),
+    settings = defaultSettings ++ Seq(
+      libraryDependencies ++= Seq(
+        Dependencies.itext, 
+        Dependencies.poi,
+        Dependencies.poi_ooxml,
+        Dependencies.poi_ooxml_schemas,
+        Dependencies.scopt,
+        Dependencies.scalaz
+      )
+    ) ++ SbtOneJar.oneJarSettings
+  )
 
   object Dependencies {
     val itext = "com.itextpdf" % "itextpdf" % "5.3.2"
     val poi = "org.apache.poi" % "poi" % "3.7"
     val poi_ooxml = "org.apache.poi" % "poi-ooxml" % "3.7"
     val poi_ooxml_schemas = "org.apache.poi" % "poi-ooxml-schemas" % "3.7"
-    val scopt = "com.github.scopt" %% "scopt" % "3.2.0"
+    val scopt = "com.github.scopt" %% "scopt" % "3.3.0"
+    val scalaz = "org.scalaz" %% "scalaz-core" % "7.1.0"
   }
 
   override lazy val settings = super.settings ++ buildSettings

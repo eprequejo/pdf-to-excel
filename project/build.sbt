@@ -3,3 +3,6 @@ resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/release
 
 resolvers += Resolver.sonatypeRepo("public")
 
+addSbtPlugin("com.github.retronym" % "sbt-onejar" % "0.8")
+
+
