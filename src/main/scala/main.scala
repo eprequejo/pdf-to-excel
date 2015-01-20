@@ -1,36 +1,44 @@
 import PdfHandle._
 import ExcelHandle._
 
+import scalaz._
+import Scalaz._
+
 object PdfToExcel extends App {
 
-  val mode = 2 //1 -> swatch 2 -> casio
-  val fileName = "document_907611641796"
+  println("STARTING CONVERSION =======================================")
 
-  val pdfFile = s"${fileName}.pdf"
+  val parser = Scopt.getArgs
 
-  mode match {
-    case 1 =>
-      println("Reading swatch pdf ...")
-      val data = getSwatchData(pdfFile)
+  parser.parse(args, ConfigScopt()).flatMap { opts =>
 
-      println("Building swatch excel ...")
-      val book = Some(buildSwatchExcel(data.albaranNum, data.albaranDate, data.productList))
-      val excelFile = s"${data.albaranNum}.xls"
-      book.map(b => writeExcelToFile(b, excelFile)).getOrElse("No book created")
+    (opts.filePath |@| opts.mode) { case (file, mode) =>
 
-    case 2 =>
-      println("Reading casio pdf ...")
-      val data = getCasioData(pdfFile)
+      mode match {
+        case 1 =>
+          println("Reading swatch pdf ...")
+          val data = getSwatchData(file)
 
-      println("Building casio excel ...")
-      //casio list has to be flattened
-      val book = Some(buildCasioExcel(data.albaranNum, data.albaranDate, data.productList.flatten))
-      val excelFile = s"${data.albaranNum}.xls"
-      book.map(b => writeExcelToFile(b, excelFile)).getOrElse("No book created")
+          println("Building swatch excel ...")
+          val book = Some(buildSwatchExcel(data.albaranNum, data.albaranDate, data.productList))
+          val excelFile = s"${data.albaranNum}.xls"
+          book.map(b => writeExcelToFile(b, excelFile)).getOrElse("No book created")
 
-    case _ =>
-      println("Mode not found")
-      None
+        case 2 =>
+          println("Reading casio pdf ...")
+          val data = getCasioData(file)
+
+          println("Building casio excel ...")
+          //casio list has to be flattened
+          val book = Some(buildCasioExcel(data.albaranNum, data.albaranDate, data.productList.flatten))
+          val excelFile = s"${data.albaranNum}.xls"
+          book.map(b => writeExcelToFile(b, excelFile)).getOrElse("No book created")
+      }
+
     }
+
+  } getOrElse (println(parser.usage))
+
+  println("FINISHED CONVERSION =======================================")
 
 }
