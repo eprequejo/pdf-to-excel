@@ -21,7 +21,8 @@ object MyBuild extends Build {
         Dependencies.poi_ooxml,
         Dependencies.poi_ooxml_schemas,
         Dependencies.scopt,
-        Dependencies.scalaz
+        Dependencies.scalaz,
+        Dependencies.commons_lang3
       )
     ) ++ SbtOneJar.oneJarSettings
   )
@@ -33,6 +34,7 @@ object MyBuild extends Build {
     val poi_ooxml_schemas = "org.apache.poi" % "poi-ooxml-schemas" % "3.7"
     val scopt = "com.github.scopt" %% "scopt" % "3.3.0"
     val scalaz = "org.scalaz" %% "scalaz-core" % "7.1.0"
+    val commons_lang3 =  "org.apache.commons" % "commons-lang3" % "3.3.2"
   }
 
   override lazy val settings = super.settings ++ buildSettings
