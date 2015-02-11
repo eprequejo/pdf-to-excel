@@ -6,13 +6,13 @@ import Scalaz._
 
 object PdfToExcel extends App {
 
-  println("STARTING CONVERSION =======================================")
-
   val parser = Scopt.getArgs
 
   parser.parse(args, ConfigScopt()).flatMap { opts =>
 
     (opts.filePath |@| opts.mode) { case (file, mode) =>
+
+      println("STARTING CONVERSION =======================================")
 
       mode match {
         case 1 =>
@@ -35,10 +35,10 @@ object PdfToExcel extends App {
           book.map(b => writeExcelToFile(b, excelFile)).getOrElse("No book created")
       }
 
+      println("FINISHED CONVERSION =======================================")
+
     }
 
   } getOrElse (println(parser.usage))
-
-  println("FINISHED CONVERSION =======================================")
 
 }
