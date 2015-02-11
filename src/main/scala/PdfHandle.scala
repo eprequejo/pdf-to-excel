@@ -3,6 +3,8 @@ import com.itextpdf.text.pdf.PdfReader
 
 import java.io.FileWriter
 
+import org.apache.commons.lang3.StringUtils.{ contains }
+
 import scala.collection.JavaConversions._
 import scala.io.Source
 
@@ -111,17 +113,23 @@ object PdfHandle {
     val numPages = reader.getNumberOfPages
     println(s"Number of pdf pages: ${numPages}")
 
-    val endProductsLine = "                                                                         ----------------"
-
     for {
       page <- List.range(1, numPages + 1)
     } yield {
 
       val lines = pdfPageReader(reader, page)
 
-      val init = lines.dropWhile(_ != "No. Artículo Descripción No. Artículo cliente Cantidad Precio unitario Total")
-      if(init.exists( _ == endProductsLine)) init.takeWhile(_ != endProductsLine).drop(2)
+      val init =
+      if(lines.exists( l => l.contains("PEDIDO URGENTE"))) lines.dropWhile(!_.contains("PEDIDO URGENTE")).drop(2)
+      else if(lines.exists( l => l.contains("Brought Forward"))) lines.dropWhile(!_.contains("Brought Forward")).drop(1)
+      else lines.dropWhile(_ != "No. Artículo Descripción No. Artículo cliente Cantidad Precio unitario Total").drop(2)
+
+      val content =
+      if(init.exists( l => l.contains("Order Total"))) init.takeWhile(!_.contains("Order Total")).dropRight(1)
+      else if(init.exists( l => l.contains("Carried Forward"))) init.takeWhile(!_.contains("Carried Forward"))
       else List()
+
+      content
 
     }
   }
