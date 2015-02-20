@@ -4,7 +4,7 @@ PdfToExcel is an app inside of your **Desktop/SPApp** folder
 
 ## Steps:
 
-* Copy the pdf to PdfToExcel folder in your Desktop/SPApp
+* Copy the pdf invoice to PdfToExcel folder in your Desktop/SPApp
 * Open a **terminal**: 
 	* Spotlight - type "terminal" or
 	* Applications/Utilities/Terminal.app
@@ -14,11 +14,20 @@ PdfToExcel is an app inside of your **Desktop/SPApp** folder
 	* `java -jar pdftoexcel.jar` with some options
 	* `java -jar pdftoexcel.jar --help` for help
 * Options:
-	* -f or --file: file to convert: `/Users/felipesanchezpombo/Desktop/SPApps/PdfToExcel/name_pdf_file.pdf`
-	* -m or --mode: mode to work: `1 for Swatch, 2 for Casio`
+		
+		-f <value> | --file <value>
+        	Path to the input file to process
+  		-m <value> | --mode <value>
+        	Mode to work: 1 -> Swatch ; 2 -> Casio
+  		--help
+        	Prints this usage text
 
 ## Example:
 ###  Casio - "document_041211991140.pdf":
- `java -jar pdftoexcel.jar -f "/Users/felipesanchezpombo/Desktop/SPApps/PdfToExcel/document_041211991140.pdf" -m 2`
+ 
+ 	java -jar pdftoexcel.jar -f document_041211991140.pdf -m 2
+ 	
 ### Swatch - "Factura Swatch Group España_0100002924_15.01.2015 19.24.04.pdf":
- `java -jar pdftoexcel.jar -f "/Users/felipesanchezpombo/Desktop/SPApps/PdfToExcel/Factura Swatch Group España_0100002924_15.01.2015 19.24.04.pdf" -m 1`
+ 	java -jar pdftoexcel.jar -f "Factura Swatch Group España_0100002924_15.01.2015 19.24.04.pdf" -m 1
+ 	
+ (If there are any blank spaces on the invoice name, use "" to enclose it)
