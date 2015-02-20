@@ -1,6 +1,8 @@
 import PdfHandle._
 import ExcelHandle._
 
+import java.io.File
+
 import scalaz._
 import Scalaz._
 
@@ -21,7 +23,7 @@ object PdfToExcel extends App {
 
           println("Building swatch excel ...")
           val book = Some(buildSwatchExcel(data.albaranNum, data.albaranDate, data.productList))
-          val excelFile = s"${data.albaranNum}.xls"
+          val excelFile = buildNameFile(data.albaranNum)
           book.map(b => writeExcelToFile(b, excelFile)).getOrElse("No book created")
 
         case 2 =>
@@ -31,7 +33,9 @@ object PdfToExcel extends App {
           println("Building casio excel ...")
           //casio list has to be flattened
           val book = Some(buildCasioExcel(data.albaranNum, data.albaranDate, data.productList.flatten))
-          val excelFile = s"${data.albaranNum}.xls"
+
+          //checking if the file already exists, if so we'll change the name to keep both
+          val excelFile = buildNameFile(data.albaranNum)
           book.map(b => writeExcelToFile(b, excelFile)).getOrElse("No book created")
       }
 
@@ -40,5 +44,11 @@ object PdfToExcel extends App {
     }
 
   } getOrElse (println(parser.usage))
+
+  private def buildNameFile(name: String): String = {
+    val fileName = s"${name}.xls"
+    val file = new File(fileName)
+    if(file.exists) s"${name}_2.xls" else fileName
+  }
 
 }
