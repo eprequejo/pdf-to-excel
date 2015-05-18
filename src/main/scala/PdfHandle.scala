@@ -122,6 +122,7 @@ object PdfHandle {
       val init =
       if(lines.exists( l => l.contains("PEDIDO URGENTE"))) lines.dropWhile(!_.contains("PEDIDO URGENTE")).drop(2)
       else if(lines.exists( l => l.contains("Brought Forward"))) lines.dropWhile(!_.contains("Brought Forward")).drop(1)
+      else if(lines.exists( l => l.contains("Order Numb"))) lines.dropWhile(!_.contains("Order Numb")).drop(2)
       else lines.dropWhile(_ != "No. Artículo Descripción No. Artículo cliente Cantidad Precio unitario Total").drop(2)
 
       val content =
