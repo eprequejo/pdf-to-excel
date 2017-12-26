@@ -5,16 +5,19 @@ object Scopt {
 
   def getArgs = {
     new scopt.OptionParser[ConfigScopt]("pdftoexcel") {
-      head("scopt", "3.x")
-      opt[String]('f', "file") action { (x, c) => c.copy(filePath = Option(x)) } text("Path to the input file to process")
-      opt[Int]('m', "mode") action { 
-        (x, c) => c.copy(mode = Option(x)) 
+
+      help("help") text ("display usage information")
+
+      opt[String]("file") abbr ("f") valueName ("<file>") text ("Path to the input file to process") action { (v, conf) =>
+        conf.copy(filePath = Some(v))
+      }
+      opt[Int]("mode") abbr ("m") valueName ("<mode>") text ("Mode: 1 -> Swatch ; 2 -> Casio") action { (v, conf) =>
+        conf.copy(mode = Some(v))
       } validate { x =>
-        if (x == 1 || x == 2) success else failure("Option -m must be either 1 for Swatch or 2 for Casio")
-      } text("Mode to work: 1 -> Swatch ; 2 -> Casio")
-      help("help") text("Prints this usage text")
+        if (x == 1 || x == 2 || x == 3 || x == 4) success
+        else failure("Option -m must be either 1 for Swatch or 2 for Casio or 3 for Fosil or 4 for Swarovsky")
+      }
     }
   }
 
 }
-
