@@ -3,6 +3,44 @@ import java.io.{ File, FileOutputStream }
 
 object ExcelHandle {
 
+  def buildFosilExcel(albaranNum: String, albaranDate: String, productList: List[String]): XSSFWorkbook = {
+
+    //Blank workbook
+    val workbook = new XSSFWorkbook()
+
+    val sheet = createTemplate(workbook)
+
+    //Iterate over data and write to sheet
+    productList.zipWithIndex.foreach{ case(listData, rowNum) =>
+
+      val row = sheet.createRow(rowNum + 1)
+
+      val data = listData.split("\\s{2,}")
+
+      val albaranNumCell = row.createCell(0)
+      albaranNumCell.setCellValue(albaranNum)
+
+      val referenciaCell = row.createCell(3)
+      referenciaCell.setCellValue(data(0))
+
+      val descriptionCell = row.createCell(4)
+      val description = data(1).replaceAll("\\d","").replaceAll(",", "")
+      descriptionCell.setCellValue(description)
+
+      val unitsCell = row.createCell(5)
+      unitsCell.setCellValue(data(2).toInt)
+
+      val albaranDateCell = row.createCell(6)
+      albaranDateCell.setCellValue(albaranDate.toString)
+
+      val costCell = row.createCell(9)
+      val cost = data(3).replace('.', ',')
+      costCell.setCellValue(cost.toString)
+    }
+
+    workbook
+  }
+
   def buildSwatchExcel(albaranNum: String, albaranDate: String, productList: List[List[String]]): XSSFWorkbook = {
 
     //Blank workbook
