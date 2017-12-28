@@ -123,16 +123,11 @@ object PdfHandle {
         // rest of the pages
         else lines.dropWhile(_ != "C.I.F/N.I.F.: ESB59582700").drop(1)
 
-      // remove lines which don't startsWith "MK"
-      // TODO dos preguntas:
-      // todas las referencias empiezan por MK?
-      // que pasa si me cargo parte de la description?
-      val content = init.map{ s =>
-        if(s.startsWith("MK")) Some(s)
-        else None
-      }.flatten
-
-      content
+      val content = init.map{ s => s.split("\\s{2,}").toList }.filter(s => s.length == 5 || s.length == 6)
+      content.map{ l =>
+        if (l.length == 6) l.take(1) ++ l.drop(2) mkString(";")
+        else l mkString(";")
+      }
     }
   }
 

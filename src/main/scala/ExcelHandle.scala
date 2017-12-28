@@ -15,7 +15,7 @@ object ExcelHandle {
 
       val row = sheet.createRow(rowNum + 1)
 
-      val data = listData.split("\\s{2,}")
+      val data = listData.split(";")
 
       val albaranNumCell = row.createCell(0)
       albaranNumCell.setCellValue(albaranNum)
